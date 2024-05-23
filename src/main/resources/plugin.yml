@@ -1,0 +1,9 @@
+name: MyGuilds
+version: '${project.version}'
+main: pl.mrjozvvicki.myguilds.MyGuilds
+api-version: '1.20'
+depend: [ DecentHolograms ]
+commands:
+  myguilds:
+    aliases:
+      - mg
