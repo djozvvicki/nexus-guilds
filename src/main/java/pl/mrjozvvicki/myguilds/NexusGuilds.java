@@ -13,11 +13,11 @@ import java.util.Objects;
 /**
  * Main class for the MyGuilds plugin.
  */
-public final class MyGuilds extends JavaPlugin {
+public final class NexusGuilds extends JavaPlugin {
     private final GuildsConfigManager guildsConfigManager;
     private final TabListManager tabListManager;
 
-    public MyGuilds() {
+    public NexusGuilds() {
         this.guildsConfigManager = new GuildsConfigManager(this);
         this.tabListManager = TabListManager.getInstance();
     }

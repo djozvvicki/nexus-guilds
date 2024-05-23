@@ -6,7 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import pl.mrjozvvicki.myguilds.MyGuilds;
+import pl.mrjozvvicki.myguilds.NexusGuilds;
 import pl.mrjozvvicki.myguilds.entities.Guild;
 import pl.mrjozvvicki.myguilds.entities.Nexus;
 import pl.mrjozvvicki.myguilds.tasks.AcceptDeclineTask;
@@ -26,11 +26,11 @@ public class CommandManager {
     public static List<String> nexusCommands = List.of("create", "upgrade", "pos", "tp");
     public static List<String> memberCommands = List.of("list", "add", "remove");
 
-    public static MyGuilds plugin;
+    public static NexusGuilds plugin;
     static Map<String, BukkitTask> tasks = new HashMap<>();
     static Map<String, String> guildsToCreate = new HashMap<>();
 
-    public CommandManager(MyGuilds plugin) {
+    public CommandManager(NexusGuilds plugin) {
         CommandManager.plugin = plugin;
         guildsManager = GuildsManager.getInstance();
         itemsChecker = ItemsChecker.getInstance();
@@ -38,7 +38,7 @@ public class CommandManager {
 
     public static CommandManager getInstance(JavaPlugin plugin) {
         if (instance == null) {
-            instance = new CommandManager((MyGuilds) plugin);
+            instance = new CommandManager((NexusGuilds) plugin);
         }
 
         return instance;

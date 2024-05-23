@@ -8,10 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -25,6 +22,9 @@ import pl.mrjozvvicki.myguilds.entities.Nexus;
 import pl.mrjozvvicki.myguilds.manager.GuildsManager;
 import pl.mrjozvvicki.myguilds.utils.Chat;
 import pl.mrjozvvicki.myguilds.utils.InventoryBuilder;
+
+import java.util.Collections;
+import java.util.List;
 
 public class NexusListener implements Listener {
     private final GuildsManager guildsManager;
@@ -218,33 +218,25 @@ public class NexusListener implements Listener {
     }
 
     @EventHandler
-    public void onPistonExtend(BlockPistonExtendEvent event) {
-        for (Nexus nexus : guildsManager.getAllNexuses()) {
-            if (nexus != null) {
-                for (Block block : event.getBlocks()) {
-                    Location nexusLoc = nexus.getLocation();
-                    Location blockLoc = block.getLocation();
-
-                    if (blockLoc.equals(nexusLoc)) {
-                        event.setCancelled(true);
-                        return;
+    public void onPistonAction(BlockPistonEvent event) {
+        if (event instanceof BlockPistonExtendEvent || event instanceof BlockPistonRetractEvent) {
+            for (Nexus nexus : guildsManager.getAllNexuses()) {
+                if (nexus != null) {
+                    List<Block> blocks;
+                    if (event instanceof BlockPistonExtendEvent) {
+                        blocks = Collections.singletonList(event.getBlock());
+                    } else {
+                        blocks = ((BlockPistonRetractEvent) event).getBlocks();
                     }
-                }
-            }
-        }
-    }
 
-    @EventHandler
-    public void onPistonRetract(BlockPistonRetractEvent event) {
-        for (Nexus nexus : guildsManager.getAllNexuses()) {
-            if (nexus != null) {
-                for (Block block : event.getBlocks()) {
-                    Location nexusLoc = nexus.getLocation();
-                    Location blockLoc = block.getLocation();
+                    for (Block block : blocks) {
+                        Location nexusLoc = nexus.getLocation();
+                        Location blockLoc = block.getLocation();
 
-                    if (blockLoc.equals(nexusLoc)) {
-                        event.setCancelled(true);
-                        return;
+                        if (blockLoc.equals(nexusLoc)) {
+                            event.setCancelled(true);
+                            return;
+                        }
                     }
                 }
             }

@@ -1,9 +1,9 @@
-name: MyGuilds
+name: NexusGuilds
 version: '${project.version}'
-main: pl.mrjozvvicki.myguilds.MyGuilds
+main: pl.mrjozvvicki.nexusguilds.NexusGuilds
 api-version: '1.20'
 depend: [ DecentHolograms ]
 commands:
   myguilds:
     aliases:
-      - mg
+      - ng
