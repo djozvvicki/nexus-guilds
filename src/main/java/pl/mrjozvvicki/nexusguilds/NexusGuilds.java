@@ -1,5 +1,6 @@
 package pl.mrjozvvicki.nexusguilds;
 
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.mrjozvvicki.nexusguilds.command.NexusGuildsCommand;
@@ -8,7 +9,6 @@ import pl.mrjozvvicki.nexusguilds.manager.GuildsConfigManager;
 import pl.mrjozvvicki.nexusguilds.manager.TabListManager;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Main class for the NexusGuilds plugin.
@@ -54,7 +54,10 @@ public final class NexusGuilds extends JavaPlugin {
     }
 
     private void registerCommandsAndEvents() {
-        Objects.requireNonNull(getCommand("nexusguilds")).setExecutor(new NexusGuildsCommand(this));
+        PluginCommand command = getCommand("nexusguilds");
+        if (command == null) return;
+
+        command.setExecutor(new NexusGuildsCommand(this));
         getServer().getPluginManager().registerEvents(new NexusListener(), this);
     }
 

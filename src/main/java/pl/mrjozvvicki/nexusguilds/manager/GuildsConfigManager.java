@@ -76,12 +76,12 @@ public class GuildsConfigManager {
                     double maxHP = nexusSection.getDouble("maxHP");
                     String locationString = nexusSection.getString("location");
                     Location location = parseLocation(locationString);
-                    plugin.getLogger().info("Wczytano nexus gildii" + guildName);
+                    plugin.getLogger().info("Wczytano nexus gildii " + guildName);
 
                     Nexus nexus = new Nexus(createdGuild, location, (float) currentHP, (float) maxHP);
 
                     createdGuild.setNexus(nexus);
-                    plugin.getLogger().info("Dodano nexus gildii" + guildName);
+                    plugin.getLogger().info("Dodano nexus gildii " + guildName);
                 }
 
 
