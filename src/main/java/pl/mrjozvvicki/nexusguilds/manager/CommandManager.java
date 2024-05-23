@@ -170,7 +170,7 @@ public class CommandManager {
         List<Guild> guilds = guildsManager.getGuilds();
 
         if (guildsManager.getGuildsCount() > 0) {
-            Chat.sendMessage(p, "&7[&4nexusguilds&7] Lista gildii:");
+            Chat.sendMessage(p, "&7[&4NexusGuilds&7] Lista gildii:");
             int index = 1;
             for (Guild guild : guilds) {
                 int guildsMembers = guild.getMembers().size();
@@ -232,7 +232,7 @@ public class CommandManager {
     }
 
     private static boolean handleHelpCommand(Player p, String[] args) {
-        Chat.sendMessage(p, "&7[&4nexusguilds&7] Dostępne komendy:");
+        Chat.sendMessage(p, "&7[&4NexusGuilds&7] Dostępne komendy:");
         Chat.sendMessage(p, "&4/mg new <nazwa gildii>&7 - tworzenie gildii o podanej nazwie");
         Chat.sendMessage(p, "&4/mg del&7 - usuwanie gildii, której jesteś liderem");
         Chat.sendMessage(p, "&4/mg nexus&7 - tworzenie nexusa gildii (musisz być liderem)");
@@ -241,7 +241,7 @@ public class CommandManager {
     }
 
     private static boolean handleInfoCommand(Player p, String[] args) {
-        Chat.sendMessage(p, "&7[&4nexusguilds&7] Wersja: 0.1.0-SNAPSHOT");
+        Chat.sendMessage(p, "&7[&4NexusGuilds&7] Wersja: 0.1.0-SNAPSHOT");
         Chat.sendMessage(p, """
                 &7Plugin dodaje gildie oparte o nexus. \
                 Aby utworzyć nowy nexus lider gildii potrzebuje określonych przedmiotów:\
@@ -320,7 +320,7 @@ public class CommandManager {
         Guild guild = guildsManager.findGuildByLeader(p);
 
         if (guild == null) {
-            Chat.sendMessage(p, "&7 Nie jesteś liderem żadnej gildii!");
+            Chat.sendMessage(p, "&7Nie jesteś liderem żadnej gildii!");
             return false;
         }
 
@@ -333,7 +333,7 @@ public class CommandManager {
         if (args.length == 2) {
             for (Guild curGuild : guilds) {
                 if (curGuild.getLeader().equals(args[1])) {
-                    Chat.sendMessage(p, "&7Gracz &4" + args[1] + "&7 jest już liderem gildii " + guild.getName() + "&7!");
+                    Chat.sendMessage(p, "&7Gracz &4" + args[1] + "&7 jest już liderem gildii &4" + guild.getName() + "&7!");
                     return false;
                 }
             }

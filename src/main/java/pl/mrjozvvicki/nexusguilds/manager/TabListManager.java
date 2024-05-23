@@ -27,8 +27,8 @@ public class TabListManager {
 
     public void updateTabList() {
         List<Guild> topGuilds = guildsManager.getTopGuilds();
-        String header = "&7[&4nexusguilds&7] Topka gildii\n";
-        String footer = "&7------------";
+        String header = "&7[&NexusGuilds&7] TOP10 Gildii\n";
+        String footer = "&7-------------------------";
         if (!topGuilds.isEmpty()) {
             TextComponent headerComponent = Component.text(Chat.colorize(header));
             TextComponent footerComponent = Component.text(Chat.colorize(footer));
