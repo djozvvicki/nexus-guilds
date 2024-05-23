@@ -1,17 +1,17 @@
-package pl.mrjozvvicki.myguilds;
+package pl.mrjozvvicki.nexusguilds;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import pl.mrjozvvicki.myguilds.command.MyGuildsCommand;
-import pl.mrjozvvicki.myguilds.listeners.NexusListener;
-import pl.mrjozvvicki.myguilds.manager.GuildsConfigManager;
-import pl.mrjozvvicki.myguilds.manager.TabListManager;
+import pl.mrjozvvicki.nexusguilds.command.NexusGuildsCommand;
+import pl.mrjozvvicki.nexusguilds.listeners.NexusListener;
+import pl.mrjozvvicki.nexusguilds.manager.GuildsConfigManager;
+import pl.mrjozvvicki.nexusguilds.manager.TabListManager;
 
 import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Main class for the MyGuilds plugin.
+ * Main class for the NexusGuilds plugin.
  */
 public final class NexusGuilds extends JavaPlugin {
     private final GuildsConfigManager guildsConfigManager;
@@ -28,13 +28,13 @@ public final class NexusGuilds extends JavaPlugin {
         registerCommandsAndEvents();
         initializeTabListUpdater();
 
-        getLogger().info("MyGuilds > Plugin enabled");
+        getLogger().info("nexusguilds > Plugin enabled");
     }
 
     @Override
     public void onDisable() {
         saveData();
-        getLogger().info("MyGuilds > Plugin disabled");
+        getLogger().info("nexusguilds > Plugin disabled");
     }
 
     private void loadData() {
@@ -54,7 +54,7 @@ public final class NexusGuilds extends JavaPlugin {
     }
 
     private void registerCommandsAndEvents() {
-        Objects.requireNonNull(getCommand("myguilds")).setExecutor(new MyGuildsCommand(this));
+        Objects.requireNonNull(getCommand("nexusguilds")).setExecutor(new NexusGuildsCommand(this));
         getServer().getPluginManager().registerEvents(new NexusListener(), this);
     }
 
