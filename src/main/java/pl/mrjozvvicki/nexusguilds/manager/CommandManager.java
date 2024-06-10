@@ -21,8 +21,7 @@ import java.util.Objects;
 public class CommandManager {
     static CommandManager instance;
     static GuildsManager guildsManager;
-    static ItemsChecker itemsChecker;
-    public static List<String> mainCommands = List.of("help", "admin", "info", "accept", "decline", "new", "del", "list", "nexus", "member", "transfer");
+    public static List<String> mainCommands = List.of("help", "info", "list", "new", "del", "nexus", "member", "transfer", "admin", "accept", "decline");
     public static List<String> nexusCommands = List.of("create", "upgrade", "pos", "tp");
     public static List<String> memberCommands = List.of("list", "add", "remove");
     public static List<String> adminCommands = List.of("guild", "owner", "nexus", "items", "points");
@@ -35,7 +34,6 @@ public class CommandManager {
     public CommandManager(NexusGuilds plugin) {
         CommandManager.plugin = plugin;
         guildsManager = GuildsManager.getInstance();
-        itemsChecker = ItemsChecker.getInstance();
     }
 
     public static CommandManager getInstance(JavaPlugin plugin) {
@@ -78,20 +76,20 @@ public class CommandManager {
             String commandType = args[0];
             return switch (commandType) {
                 case "new" -> handleNewCommand(p, args);
-                case "del" -> handleDelCommand(p, args);
-                case "list" -> handleListCommand(p, args);
                 case "nexus" -> handleNexusCommand(p, args);
-                case "info" -> handleInfoCommand(p, args);
                 case "member" -> handleMemberCommand(p, args);
                 case "transfer" -> handleTransferCommand(p, args);
-                case "accept" -> handleAcceptCommand(p, args);
-                case "decline" -> handleDeclineCommand(p, args);
                 case "admin" -> handleAdminCommand(p, args);
-                default -> handleHelpCommand(p, args);
+                case "del" -> handleDelCommand(p);
+                case "list" -> handleListCommand(p);
+                case "info" -> handleInfoCommand(p);
+                case "accept" -> handleAcceptCommand(p);
+                case "decline" -> handleDeclineCommand(p);
+                default -> handleHelpCommand(p);
             };
         }
 
-        return handleHelpCommand(p, args);
+        return handleHelpCommand(p);
     }
 
     private static boolean checkGuildNameExists(String arg) {
@@ -134,7 +132,7 @@ public class CommandManager {
         return false;
     }
 
-    public static boolean handleAcceptCommand(Player p, String[] args) {
+    public static boolean handleAcceptCommand(Player p) {
         if (tasks.get(p.getName()) != null) {
             String guildName = guildsToCreate.get(p.getName());
             if (guildName == null) return false;
@@ -153,7 +151,7 @@ public class CommandManager {
         return false;
     }
 
-    public static boolean handleDeclineCommand(Player p, String[] args) {
+    public static boolean handleDeclineCommand(Player p) {
         Chat.sendMessage(p, "&7Tworzenie gildii zostało anulowane!");
         guildsToCreate.remove(p.getName());
         tasks.get(p.getName()).cancel();
@@ -161,7 +159,7 @@ public class CommandManager {
         return false;
     }
 
-    private static boolean handleDelCommand(Player p, String[] args) {
+    private static boolean handleDelCommand(Player p) {
         Guild guild = guildsManager.findGuildByLeader(p);
 
         if (guild != null) {
@@ -175,7 +173,7 @@ public class CommandManager {
         return false;
     }
 
-    private static boolean handleListCommand(Player p, String[] args) {
+    private static boolean handleListCommand(Player p) {
         List<Guild> guilds = guildsManager.getGuilds();
 
         if (guildsManager.getGuildsCount() > 0) {
@@ -240,7 +238,7 @@ public class CommandManager {
         return false;
     }
 
-    private static boolean handleHelpCommand(Player p, String[] args) {
+    private static boolean handleHelpCommand(Player p) {
         Chat.sendMessage(p, "&7[&4NexusGuilds&7] Dostępne komendy:");
         Chat.sendMessage(p, "&4/mg new <nazwa gildii>&7 - tworzenie gildii o podanej nazwie");
         Chat.sendMessage(p, "&4/mg del&7 - usuwanie gildii, której jesteś liderem");
@@ -249,7 +247,7 @@ public class CommandManager {
         return false;
     }
 
-    private static boolean handleInfoCommand(Player p, String[] args) {
+    private static boolean handleInfoCommand(Player p) {
         Chat.sendMessage(p, "&7[&4NexusGuilds&7] Wersja: 0.1.0-SNAPSHOT");
         Chat.sendMessage(p, """
                 &7Plugin dodaje gildie oparte o nexus. \

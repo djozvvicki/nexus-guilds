@@ -9,6 +9,7 @@ import pl.mrjozvvicki.nexusguilds.listeners.NexusListener;
 import pl.mrjozvvicki.nexusguilds.listeners.PlayerListener;
 import pl.mrjozvvicki.nexusguilds.manager.GuildsConfigManager;
 import pl.mrjozvvicki.nexusguilds.manager.TabListManager;
+import pl.mrjozvvicki.nexusguilds.utils.ItemsChecker;
 
 import java.io.IOException;
 
@@ -20,6 +21,7 @@ public final class NexusGuilds extends JavaPlugin {
 
     public NexusGuilds() {
         guildsConfigManager = new GuildsConfigManager(this);
+        ItemsChecker.initialize();
     }
 
     @Override

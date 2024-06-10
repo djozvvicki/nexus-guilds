@@ -10,23 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemsChecker {
-    private static ItemsChecker instance;
     private static final Map<Material, Integer> nexusItems = new HashMap<>();
 
-    public ItemsChecker() {
+    public static void initialize() {
         nexusItems.put(Material.GOLDEN_APPLE, 8);
         nexusItems.put(Material.DIAMOND, 32);
         nexusItems.put(Material.CARROT, 64);
         nexusItems.put(Material.LEATHER, 32);
     }
 
-    public static ItemsChecker getInstance() {
-        if (instance == null) {
-            instance = new ItemsChecker();
-        }
-
-        return instance;
-    }
 
     public static boolean hasItems(Player player) {
         List<Boolean> hasAllItems = new ArrayList<>();
