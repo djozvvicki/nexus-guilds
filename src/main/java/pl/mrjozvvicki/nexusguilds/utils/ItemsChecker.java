@@ -11,14 +11,13 @@ import java.util.Map;
 
 public class ItemsChecker {
     private static ItemsChecker instance;
-    private static final Map<Material, Integer> itemsToCheck = new HashMap<>();
+    private static final Map<Material, Integer> nexusItems = new HashMap<>();
 
     public ItemsChecker() {
-        // ItemsToCheck for nexus
-        itemsToCheck.put(Material.GOLDEN_APPLE, 8);
-        itemsToCheck.put(Material.DIAMOND, 32);
-        itemsToCheck.put(Material.CARROT, 64);
-        itemsToCheck.put(Material.LEATHER, 32);
+        nexusItems.put(Material.GOLDEN_APPLE, 8);
+        nexusItems.put(Material.DIAMOND, 32);
+        nexusItems.put(Material.CARROT, 64);
+        nexusItems.put(Material.LEATHER, 32);
     }
 
     public static ItemsChecker getInstance() {
@@ -32,7 +31,7 @@ public class ItemsChecker {
     public static boolean hasItems(Player player) {
         List<Boolean> hasAllItems = new ArrayList<>();
 
-        for (Map.Entry<Material, Integer> entry : itemsToCheck.entrySet()) {
+        for (Map.Entry<Material, Integer> entry : nexusItems.entrySet()) {
             Material itemType = entry.getKey();
             int amount = entry.getValue();
 
@@ -44,11 +43,11 @@ public class ItemsChecker {
             hasAllItems.add(true);
         }
 
-        return hasAllItems.size() == itemsToCheck.size();
+        return hasAllItems.size() == nexusItems.size();
     }
 
     public static void removeItems(Player player) {
-        for (Map.Entry<Material, Integer> entry : itemsToCheck.entrySet()) {
+        for (Map.Entry<Material, Integer> entry : nexusItems.entrySet()) {
             Material itemType = entry.getKey();
             int amount = entry.getValue();
             removeItemFromInventory(player, itemType, amount);

@@ -1,40 +1,42 @@
 package pl.mrjozvvicki.nexusguilds.entities;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import pl.mrjozvvicki.nexusguilds.utils.Chat;
+import pl.mrjozvvicki.nexusguilds.manager.PlayerPointManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Guild {
     private final String name;
     private String leader;
     private final List<String> members;
-    private final Map<String, Integer> memberPoints = new HashMap<>();
+    private Integer guildPoints;
     private Nexus nexus;
 
     public Guild(String name, String leader) {
         this.name = name;
-        this.leader = leader;
         this.members = new ArrayList<>();
-        this.addMember(leader);
-        if (!this.memberPoints.containsKey(leader)) {
-            this.memberPoints.put(leader, 500);
-        }
+        this.changeLeader(leader);
+        this.updatePoints();
     }
 
-    public int getPoints() {
-        int guildPoints = 0;
+    public void updatePoints() {
+        PlayerPointManager playerPointManager = PlayerPointManager.getInstance();
 
-        for (Integer memberPoints : memberPoints.values()) {
-            guildPoints += memberPoints;
+        int newGuildPoints = 0;
+        for (String member : members) {
+            Player p = Bukkit.getPlayer(member);
+            if (p == null) continue;
+            newGuildPoints += playerPointManager.getPlayerPoints(p);
         }
 
+        guildPoints = newGuildPoints;
+    }
+
+
+    public int getPoints() {
         return guildPoints;
     }
 
@@ -69,13 +71,12 @@ public class Guild {
         }
 
         List<OfflinePlayer> players = List.of(Bukkit.getOfflinePlayers());
-        if (!players.contains(Bukkit.getOfflinePlayer(member))) {
+        OfflinePlayer memberOP = Bukkit.getOfflinePlayer(member);
+        if (!players.contains(memberOP)) {
             return false;
         }
 
-        Player player = Bukkit.getPlayer(member);
-        if (player != null) {
-            player.displayName(Component.text(Chat.colorize("&7[&4" + getName() + "&7]" + player.displayName())));
+        if (memberOP.getPlayer() != null) {
             this.members.add(member);
             return true;
         }

@@ -44,20 +44,25 @@ public class NexusGuildsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (strings.length == 2) {
-            if (strings[0].equals("nexus")) {
-                return commandManager.getNexusCommands(strings);
+        if (strings.length >= 2) {
+            switch (strings[0]) {
+                case "nexus" -> {
+                    return commandManager.getNexusCommands(strings);
+                }
+                case "member" -> {
+                    return commandManager.getMemberCommands(strings);
+                }
+                case "admin" -> {
+                    return commandManager.getAdminCommands(strings);
+                }
             }
 
-            if (strings[0].equals("member")) {
-                return commandManager.getMemberCommands(strings);
-            }
         }
 
         if (strings.length <= 1) {
             return commandManager.getCommands(strings);
         }
 
-        return null;
+        return List.of();
     }
 }

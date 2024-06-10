@@ -58,7 +58,7 @@ public class NexusListener implements Listener {
 
                     if (distance <= 10.0f) {
                         if (!guild.getMembers().contains(event.getPlayer().getName())) {
-                            Chat.sendMessage((Player) event.getPlayer(), "&7Nie możesz otwierać skrzynek w pobliżu nexusa!");
+                            Chat.sendMessage((Player) event.getPlayer(), "&7Nie możesz otworzyć tego bloku w pobliżu nexusa!");
                             event.setCancelled(true);
                             return;
                         }

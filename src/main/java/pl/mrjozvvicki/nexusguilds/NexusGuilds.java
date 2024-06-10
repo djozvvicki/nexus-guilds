@@ -1,10 +1,12 @@
 package pl.mrjozvvicki.nexusguilds;
 
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.mrjozvvicki.nexusguilds.command.NexusGuildsCommand;
 import pl.mrjozvvicki.nexusguilds.listeners.NexusListener;
+import pl.mrjozvvicki.nexusguilds.listeners.PlayerListener;
 import pl.mrjozvvicki.nexusguilds.manager.GuildsConfigManager;
 import pl.mrjozvvicki.nexusguilds.manager.TabListManager;
 
@@ -15,11 +17,9 @@ import java.io.IOException;
  */
 public final class NexusGuilds extends JavaPlugin {
     private final GuildsConfigManager guildsConfigManager;
-    private final TabListManager tabListManager;
 
     public NexusGuilds() {
-        this.guildsConfigManager = new GuildsConfigManager(this);
-        this.tabListManager = TabListManager.getInstance();
+        guildsConfigManager = new GuildsConfigManager(this);
     }
 
     @Override
@@ -27,7 +27,6 @@ public final class NexusGuilds extends JavaPlugin {
         loadData();
         registerCommandsAndEvents();
         initializeTabListUpdater();
-
         getLogger().info("nexusguilds > Plugin enabled");
     }
 
@@ -55,15 +54,16 @@ public final class NexusGuilds extends JavaPlugin {
 
     private void registerCommandsAndEvents() {
         PluginCommand command = getCommand("nexusguilds");
-        if (command == null) return;
+        PluginManager pluginManager = getServer().getPluginManager();
+        if (command != null)
+            command.setExecutor(new NexusGuildsCommand(this));
 
-        command.setExecutor(new NexusGuildsCommand(this));
-        getServer().getPluginManager().registerEvents(new NexusListener(), this);
+        pluginManager.registerEvents(new NexusListener(), this);
+        pluginManager.registerEvents(new PlayerListener(), this);
     }
 
     private void initializeTabListUpdater() {
-        tabListManager.updateTabList();
-
+        TabListManager tabListManager = TabListManager.getInstance();
         new BukkitRunnable() {
             @Override
             public void run() {

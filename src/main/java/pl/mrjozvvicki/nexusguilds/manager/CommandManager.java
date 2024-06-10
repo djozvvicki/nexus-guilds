@@ -22,9 +22,11 @@ public class CommandManager {
     static CommandManager instance;
     static GuildsManager guildsManager;
     static ItemsChecker itemsChecker;
-    public static List<String> mainCommands = List.of("help", "info", "accept", "decline", "new", "del", "list", "nexus", "member", "transfer");
+    public static List<String> mainCommands = List.of("help", "admin", "info", "accept", "decline", "new", "del", "list", "nexus", "member", "transfer");
     public static List<String> nexusCommands = List.of("create", "upgrade", "pos", "tp");
     public static List<String> memberCommands = List.of("list", "add", "remove");
+    public static List<String> adminCommands = List.of("guild", "owner", "nexus", "items", "points");
+    public static List<String> adminPointsCommands = List.of("set", "add", "change", "remove");
 
     public static NexusGuilds plugin;
     static Map<String, BukkitTask> tasks = new HashMap<>();
@@ -65,6 +67,12 @@ public class CommandManager {
         return List.of();
     }
 
+    public List<String> getAdminCommands(String[] args) {
+        if (args.length == 3) return adminPointsCommands;
+        if (args.length == 2) return adminCommands;
+        return List.of();
+    }
+
     public boolean handleCommand(Player p, String[] args) {
         if (args.length >= 1) {
             String commandType = args[0];
@@ -78,6 +86,7 @@ public class CommandManager {
                 case "transfer" -> handleTransferCommand(p, args);
                 case "accept" -> handleAcceptCommand(p, args);
                 case "decline" -> handleDeclineCommand(p, args);
+                case "admin" -> handleAdminCommand(p, args);
                 default -> handleHelpCommand(p, args);
             };
         }
@@ -344,5 +353,35 @@ public class CommandManager {
         }
 
         return false;
+    }
+
+    private static boolean handleAdminCommand(Player p, String[] args) {
+        if (!p.hasPermission("ng.admin")) {
+            Chat.sendMessage(p, "&7Nie masz uprawnień, aby używać tej komendy!");
+            return false;
+        }
+
+        PlayerPointManager playerPointManager = PlayerPointManager.getInstance();
+
+        if (args.length >= 2) {
+            if (args[1].equals("points")) {
+                if (args.length == 4 && args[2].equals("set")) {
+                    playerPointManager.changePlayerPoints(p, Integer.parseInt(args[3]));
+                }
+                if (args.length == 4 && args[2].equals("add")) {
+                    int points = playerPointManager.getPlayerPoints(p);
+                    playerPointManager.changePlayerPoints(p, points + Integer.parseInt(args[3]));
+                }
+                if (args.length == 4 && args[2].equals("sub")) {
+                    int points = playerPointManager.getPlayerPoints(p);
+                    playerPointManager.changePlayerPoints(p, points - Integer.parseInt(args[3]));
+                }
+
+                Chat.sendMessage(p, "&7Aktualnie posiadasz &4" + playerPointManager.getPlayerPoints(p) + "&7 punktów.");
+                return true;
+            }
+        }
+
+        return true;
     }
 }
